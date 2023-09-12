@@ -1,99 +1,81 @@
-//Traversing the DOM
- var listItem= document.querySelector('#items');
- console.log(listItem.parentNode);
+var form = document.getElementById('addForm');
+var itemList = document.getElementById('items');
+var filter = document.getElementById('filter');
 
- listItem.parentNode.style.backgroundColor='#f4f4f4';
-
- console.log(listItem.parentNode.parentNode);
-
-//parentELement
-   var listItem= document.querySelector('#items');
-   console.log(listItem.parentElement);
-
-  listItem.parentElement.style.backgroundColor='#f4f4f4';
-
-  console.log(listItem.parentElement.parentElement);
+// Form submit event
+form.addEventListener('submit', onSubmit);
+// Delete event
+itemList.addEventListener('click', onDelete);
+// Filter event
+filter.addEventListener('keyup', onFilter);
 
 
-//childNode
- console.log(listItem.childNodes);
-
- console.log(listItem.children);
-
- console.log(listItem.children[1]);
- listItem.children[1].style.backgroundColor='yellow';
-
-
-//FirstChild
- console.log(listItem.firstChild);
-
-//firstElementChild
- console.log(listItem.firstElementChild);
- listItem.firstElementChild.textContent='Hello';
+//adding edit button to all list item
+for(let i = 0;itemList.clientHeight;i++){
+  const editBtn = document.createElement('button');
+  editBtn.className = 'btn btn-sm float-right edition';
+  editBtn.appendChild(document.createTextNode('EDIT'));
+  itemList[i].appendChild(editBtn);
+}
+// Add item
+function onSubmit(e){
+  e.preventDefault();
 
 
+  const inputValue=document.getElementById('item').value;
+  const description =document.getElementById('description').value;
+  
 
-//lastChild
- console.log(listItem.lastChild);
+  const li = document.createElement('li');
 
-//lastElementChild
-  console.log(listItem.lastElementChild);
-  listItem.lastElementChild.textContent='Hello';
+  li.className = 'list-group-item';
 
+  var newText = document.createTextNode(inputValue);
+  var descriptionNode = document.createTextNode('description');
 
- //nextSibling
- console.log(listItem.nextSibling);
-
-
- //nextElementSIbling
-
- console.log(listItem.nextElementSibling);
-
- //previousSibling
-  console.log(listItem.previousSibling);
-
- //previousElementSibling
-  console.log(listItem.previousElementSibling);
-
-  listItem.previousElementSibling.style.color='green';
-
- //createElement
- //create a div
-
-  var newDiv = document.createElement('div');
-  console.log(newDiv);
-
- //add className
-  newDiv.className='hello';
-
- //add id
-  newDiv.id='welcome';
-
- //setAttribute
-  newDiv.setAttribute('title','hello Div');
-
- //create text node
-
-  var newtextdiv=document.createTextNode('Hello World');
-
- //Add text to div
-  newDiv.appendChild(newtextdiv);
+   li.appendChild(newText);
+   li.appendChild(descriptionNode)
 
 
+   const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
+  deleteBtn.appendChild(document.createTextNode('EDIT'));
 
-  var container = document.querySelector('header .container');
-  var h1 = document.querySelector('header h1');
+  li.appendChild(deleteBtn);
 
-  console.log(newDiv);
- newDiv.style.fontSize='30px';
-  container.insertBefore(newDiv,h1);
+  //adding Edit button
+  const editBtn = document.createElement('button');
+    editBtn.className = 'btn btn-danger btn-sm float-right delete';
+  editBtn.appendChild(document.createTextNode('X'));
 
+  li.appendChild(editBtn);
 
-//Now go head and add HEllo word before Item Lister
-parentNode=document.getElementById('items')
+  item.appendChild();
+  
 
-//helloworldlielement = <li>Hello world)
+// Remove item
+function onDelete(e){
+  if(e.target.classList.contains('delete')){
+    if(confirm('Are You Sure?')){
+      var li = e.target.parentElement;
+      item.removeChild(li);
+    }
+  }
+}
 
-//parentNode.appendFirstChild(helloworldlielement)
-parentNode.innerhtml=  '<li class="list-group-item">Item 1</li><li class="list-group-item">Item 2</li><li class="list-group-item">Item 3</li><li class="list-group-item">Item 4</li>'
- parentNode.innerhtml = '<li class="list-group-item">Hello word</li>' + parentNode.innerhtml
+// Filter Items
+function onFilter(e){
+  // convert text to lowercase
+  var text = e.target.value.toLowerCase();
+  // Getting list
+  var items = itemList.getElementsByTagName('li');
+  // Converting item from HTML collection to an array
+  Array.from(items).forEach(function(item){
+    var itemName = item.firstChild.textContent;
+    if(itemName.toLowerCase().indexOf(text) != -1 || description.toLowerCase().indexOf(text) != -1 ){
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
